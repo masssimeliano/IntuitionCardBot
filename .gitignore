@@ -1,0 +1,21 @@
+# ===== Gradle =====
+.gradle/
+build/
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ===== Secrets / env =====
+.env.properties
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== OS junk =====
+.DS_Store
+Thumbs.db
