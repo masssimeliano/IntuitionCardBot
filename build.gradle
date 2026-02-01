@@ -23,15 +23,15 @@ dependencies {
     // Spring
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    // implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     // DB
-    // runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
+    runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
 
     // Liquibase
-    // implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
-    // implementation "org.apache.commons:commons-lang3:${stringUtilsVersion}"
+    implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+    implementation "org.apache.commons:commons-lang3:${stringUtilsVersion}"
 
     // Telegram
     implementation "org.telegram:telegrambots-longpolling:${telegramBotsVersion}"
@@ -46,7 +46,7 @@ dependencies {
 
     // Tests
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    // testRuntimeOnly "com.h2database:h2:${h2Version}"
+    testRuntimeOnly "com.h2database:h2:${h2Version}"
 }
 
 tasks.named('test') {

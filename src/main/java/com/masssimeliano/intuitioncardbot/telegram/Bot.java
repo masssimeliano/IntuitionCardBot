@@ -20,6 +20,9 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
 
     private final BotProperties properties;
+    private StartCommandHandler startCommandHandler;
+    private ErrorCommandHandler errorCommandHandler;
+    private UnknownCommandHandler unknownCommandHandler;
 
     private final TelegramClient telegramClient;
 
@@ -38,27 +41,17 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
         if (update.hasMessage()) {
             Message updateMessage = update.getMessage();
 
-            long chatId = updateMessage.getChatId();
-            String firstName = updateMessage.getFrom().getFirstName();
-
-            BotMessage message = BotMessage.builder()
-                    .chatId(chatId)
-                    .telegramClient(telegramClient)
-                    .build();
-
             if (updateMessage.hasText()) {
                 String updateText = updateMessage.getText();
 
                 switch (updateText) {
                     case "/start":
-                        new StartCommandHandler(updateMessage, telegramClient).handle();
+                        startCommandHandler.handle(updateMessage);
                         break;
                     default:
-                        new UnknownCommandHandler(updateMessage, telegramClient).handle();
-
-                }
+                        unknownCommandHandler.handle(updateMessage);                }
             } else {
-                new ErrorCommandHandler(updateMessage, telegramClient).handle();
+                errorCommandHandler.handle(updateMessage);
             }
         }
     }

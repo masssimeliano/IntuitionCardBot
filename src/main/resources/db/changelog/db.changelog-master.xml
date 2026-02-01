@@ -5,4 +5,7 @@
         xsi:schemaLocation="
           http://www.liquibase.org/xml/ns/dbchangelog
           https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <include file="db/changelog/001-create-bot-users.xml"/>
+    <include file="db/changelog/002-create-game-history.xml"/>
 </databaseChangeLog>
