@@ -12,8 +12,8 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class UnknownCommandHandler implements CommandHandler {
 
     private final TelegramClient telegramClient;
@@ -23,14 +23,14 @@ public class UnknownCommandHandler implements CommandHandler {
     public void handle(Message updateMessage) {
         long chatId = updateMessage.getChatId();
 
+        String text = BotResponse.Error.UNKNOWN_TEXT_MESSAGE;
+
         BotMessage message = BotMessage.builder()
                 .chatId(chatId)
                 .telegramClient(telegramClient)
-                .text(BotResponse.Error.UNKNOWN_TEXT_MESSAGE)
-                .keyboard(BotKeyboard.mainMenu())
+                .text(text)
                 .build();
 
-        long messageId = message.send();
-        BotUser botUser = botUserRepository.findById(chatId).get();
+        message.send();
     }
 }

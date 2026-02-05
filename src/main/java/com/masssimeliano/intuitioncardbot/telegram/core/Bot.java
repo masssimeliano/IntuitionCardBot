@@ -1,6 +1,6 @@
 package com.masssimeliano.intuitioncardbot.telegram.core;
 import com.masssimeliano.intuitioncardbot.telegram.handler.callback.AnswerCallbackHandler;
-import com.masssimeliano.intuitioncardbot.telegram.handler.command.ErrorCommandHandler;
+import com.masssimeliano.intuitioncardbot.telegram.handler.callback.NavigationCallbackHandler;
 import com.masssimeliano.intuitioncardbot.telegram.handler.command.StartCommandHandler;
 import com.masssimeliano.intuitioncardbot.telegram.handler.command.UnknownCommandHandler;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateC
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,11 +22,9 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
 
     private final BotProperties properties;
     private final StartCommandHandler startCommandHandler;
-    private final ErrorCommandHandler errorCommandHandler;
     private final UnknownCommandHandler unknownCommandHandler;
     private final AnswerCallbackHandler answerCallHandler;
-
-    private final TelegramClient telegramClient;
+    private final NavigationCallbackHandler navigationCallHandler;
 
     @Override
     public String getBotToken() {
@@ -52,9 +49,10 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
                         startCommandHandler.handle(updateMessage);
                         break;
                     default:
-                        unknownCommandHandler.handle(updateMessage);                }
+                        unknownCommandHandler.handle(updateMessage);
+                }
             } else {
-                errorCommandHandler.handle(updateMessage);
+                unknownCommandHandler.handle(updateMessage);
             }
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
@@ -72,14 +70,11 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
 
             switch (root) {
                 case "nav":
+                    navigationCallHandler.handle(callbackQuery);
+                    break;
 
+                default:
                     break;
-                case "mode":
-                    break;
-                case "pick" -> handlePick(p, chatId, messageId);
-                case "stats" -> handleStats(p, chatId, messageId);
-                case "again" -> handleAgain(chatId, messageId);
-                default -> log.warn("Unknown callback root: {}", data);
             }
         }
     }

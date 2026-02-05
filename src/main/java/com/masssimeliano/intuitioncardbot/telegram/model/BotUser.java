@@ -24,4 +24,7 @@ public class BotUser {
 
     @Column(name = "username", length = 100)
     private String username;
+
+    @Column(name = "last_message_id")
+    private Integer lastMessageId;
 }

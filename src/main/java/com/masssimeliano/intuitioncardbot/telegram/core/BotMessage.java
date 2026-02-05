@@ -2,7 +2,11 @@ package com.masssimeliano.intuitioncardbot.telegram.core;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -23,14 +27,14 @@ public class BotMessage {
     @NonNull
     private final TelegramClient telegramClient;
 
-    public long send() {
+    public int send() {
         SendMessage message = SendMessage.builder()
                 .chatId(chatId)
                 .text(text)
                 .replyMarkup(keyboard)
                 .build();
 
-        long messageId = 0L;
+        int messageId = 0;
         try {
             Message sentMessage = telegramClient.execute(message);
             messageId = sentMessage.getMessageId();
@@ -39,5 +43,33 @@ public class BotMessage {
         }
 
         return messageId;
+    }
+
+    public void delete(int messageId) {
+        DeleteMessage message = DeleteMessage.builder()
+                .chatId(chatId)
+                .messageId(messageId)
+                .build();
+
+        try {
+            telegramClient.execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error deleting the message: {}", e.getMessage());
+        }
+    }
+
+    public void edit(int messageId) {
+        EditMessageText message = EditMessageText.builder()
+                .chatId(chatId)
+                .messageId(messageId)
+                .text(text)
+                .replyMarkup(keyboard)
+                .build();
+
+        try {
+            telegramClient.execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error editing the message: {}", e.getMessage());
+        }
     }
 }

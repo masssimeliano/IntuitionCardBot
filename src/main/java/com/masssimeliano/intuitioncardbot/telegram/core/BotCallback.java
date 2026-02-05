@@ -11,23 +11,20 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 @Setter
 @Builder
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class BotCallback {
-
-    private final String callbackQueryId;
 
     @NonNull
     private final TelegramClient telegramClient;
 
-    public void send() {
-        AnswerCallbackQuery answerQuery = AnswerCallbackQuery.builder()
+    public void answer(String callbackQueryId) {
+        AnswerCallbackQuery answer = AnswerCallbackQuery.builder()
                 .callbackQueryId(callbackQueryId)
                 .build();
 
         try {
-            telegramClient.execute(answerQuery);
+            telegramClient.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Error sending the answer callback: {}", e.getMessage());
+            log.error("Error answering the callback: {}", e.getMessage());
         }
     }
 }

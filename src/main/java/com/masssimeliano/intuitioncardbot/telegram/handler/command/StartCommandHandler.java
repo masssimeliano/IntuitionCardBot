@@ -24,7 +24,7 @@ public class StartCommandHandler implements CommandHandler {
         long chatId = updateMessage.getChatId();
         String firstName = updateMessage.getFrom().getFirstName();
 
-        String text = BotResponse.Command.GREETING(firstName) + "\n";
+        String text = BotResponse.Command.GREETING(firstName) + "\n\n";
 
         boolean alreadyRegistered = botUserRepository.existsById(chatId);
         if (alreadyRegistered) {
@@ -41,20 +41,27 @@ public class StartCommandHandler implements CommandHandler {
                 .build();
 
         BotUser botUser;
-        long messageId = message.send();
         if (!alreadyRegistered) {
             botUser = BotUser.builder()
                     .chatId(chatId)
                     .firstName(firstName)
                     .username(updateMessage.getFrom().getUserName())
-                    .lastMessageId(messageId)
                     .build();
 
             botUserRepository.save(botUser);
         } else {
             botUser = botUserRepository.findById(chatId).get();
-            botUser.setLastMessageId(messageId);
+
+            BotMessage oldMessage = BotMessage.builder()
+                    .chatId(chatId)
+                    .telegramClient(telegramClient)
+                    .build();
+
+            oldMessage.delete(botUser.getLastMessageId());
         }
+
+        int lastMessageId = message.send();
+        botUser.setLastMessageId(lastMessageId);
 
         botUserRepository.save(botUser);
     }

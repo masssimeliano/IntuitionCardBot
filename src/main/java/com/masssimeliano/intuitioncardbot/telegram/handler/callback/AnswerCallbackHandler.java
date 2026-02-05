@@ -15,11 +15,12 @@ public class AnswerCallbackHandler implements CallbackHandler {
     private final TelegramClient telegramClient;
 
     public void handle(CallbackQuery callbackQuery) {
+        String callbackQueryId = callbackQuery.getId();
+
         BotCallback callback = BotCallback.builder()
                 .telegramClient(telegramClient)
-                .callbackQueryId(callbackQuery.getId())
                 .build();
 
-        callback.send();
+        callback.answer(callbackQueryId);
     }
 }

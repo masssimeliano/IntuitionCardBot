@@ -38,7 +38,7 @@ public final class BotKeyboard {
                 row(button("♠️♥️♦️♣️ Масть", "mode:SUIT")),
                 row(button("🔢 Номінал", "mode:RANK")),
                 row(button("🃏 Повна карта", "mode:FULL")),
-                row(button("⬅️ Назад", "nav:main")));
+                row(button("🏠 Назад", "nav:main")));
     }
 
     public static InlineKeyboardMarkup colorPick() {
@@ -46,7 +46,7 @@ public final class BotKeyboard {
                 row(
                         button("🔴 Червоний", "pick:COLOR:RED"),
                         button("⚫ Чорний", "pick:COLOR:BLACK")),
-                row(button("⬅️ В меню", "nav:modes")));
+                row(button("🏠 В меню", "nav:modes")));
     }
 
     public static InlineKeyboardMarkup suitPick() {
@@ -56,7 +56,7 @@ public final class BotKeyboard {
                         button("♥️ Черви", "pick:SUIT:HEARTS")),
                 row(button("♦️ Бубни", "pick:SUIT:DIAMONDS"),
                         button("♣️ Трефи", "pick:SUIT:CLUBS")),
-                row(button("⬅️ В меню", "nav:modes")));
+                row(button("🏠 В меню", "nav:modes")));
     }
 
     public static InlineKeyboardMarkup rankPick(String prefix) {
@@ -79,7 +79,7 @@ public final class BotKeyboard {
                         button("4", prefix + "4"),
                         button("3", prefix + "3"),
                         button("2", prefix + "2")),
-                row(button("⬅️ В меню", "nav:modes")));
+                row(button("🏠 В меню", "nav:modes")));
     }
 
     public static InlineKeyboardMarkup fullPick() {
@@ -109,6 +109,6 @@ public final class BotKeyboard {
                 row(
                         button("⏳ Тиждень", "stats:WEEK"),
                         button("⏰ Місяць", "stats:MONTH")),
-                row(button("⬅️ Назад", "nav:main")));
+                row(button("🏠 Назад", "nav:main")));
     }
 }
