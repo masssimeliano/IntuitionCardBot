@@ -18,7 +18,7 @@ public class GameHistory {
     private Integer id;
 
     @Column(name = "chat_id", nullable = false)
-    private Integer chatId;
+    private Long chatId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "game_type", nullable = false, length = 50)

@@ -1,4 +1,4 @@
-package com.masssimeliano.intuitioncardbot.telegram;
+package com.masssimeliano.intuitioncardbot.telegram.core;
 
 public interface BotResponse {
 
@@ -8,7 +8,8 @@ public interface BotResponse {
                     "Привіт, %s!\nЯ - Інтуїція Карти Бот \uD83D\uDD2E і з моєю допомогою ти зможеш тренувати свою інтуїцію!",
                     firstName);
         }
-        String INSTRUCTION = "Ось команди, які я розумію:\n";
+        String ALREADY_REGISTERED = "Ви вже зареєстровані в нашому боті.";
+        String NOT_REGISTERED = "Тепер ви зареєстровані в нашому боті!";
     }
 
     interface Error {

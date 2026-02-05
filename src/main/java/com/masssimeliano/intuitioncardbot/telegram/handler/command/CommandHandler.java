@@ -1,4 +1,4 @@
-package com.masssimeliano.intuitioncardbot.telegram.handler;
+package com.masssimeliano.intuitioncardbot.telegram.handler.command;
 
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 

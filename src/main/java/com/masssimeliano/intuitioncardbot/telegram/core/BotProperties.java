@@ -1,4 +1,4 @@
-package com.masssimeliano.intuitioncardbot.telegram;
+package com.masssimeliano.intuitioncardbot.telegram.core;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

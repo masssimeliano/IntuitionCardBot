@@ -17,7 +17,7 @@ public class BotUser {
 
     @Id
     @Column(name = "chat_id", nullable = false)
-    private Integer chatId;
+    private Long chatId;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;

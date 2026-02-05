@@ -1,4 +1,4 @@
-package com.masssimeliano.intuitioncardbot.telegram;
+package com.masssimeliano.intuitioncardbot.telegram.core;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
