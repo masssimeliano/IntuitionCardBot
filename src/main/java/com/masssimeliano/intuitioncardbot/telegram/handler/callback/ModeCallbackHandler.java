@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class NavigationCallbackHandler implements CallbackHandler {
+public class ModeCallbackHandler implements CallbackHandler {
 
     private final TelegramClient telegramClient;
 
@@ -34,29 +34,25 @@ public class NavigationCallbackHandler implements CallbackHandler {
                 .build();
 
         switch (root) {
-            case "main":
-                botMessage.setText(BotResponse.Navigation.ACTION_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.mainMenu());
+            case "COLOR":
+                botMessage.setText(BotResponse.Mode.COLOR_CHOICE);
+                botMessage.setKeyboard(BotKeyboard.colorPick());
                 break;
 
-            case "modes":
-                botMessage.setText(BotResponse.Navigation.MODE_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.mainMenu());
+            case "SUIT":
+                botMessage.setText(BotResponse.Mode.SUIT_CHOICE);
+                botMessage.setKeyboard(BotKeyboard.suitPick());
                 break;
 
-            case "stats":
-                botMessage.setText(BotResponse.Navigation.STATISTICS_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.statsMenu());
+            case "RANK":
+                botMessage.setText(BotResponse.Mode.RANK_CHOICE);
+                botMessage.setKeyboard(BotKeyboard.rankPick("pick:RANK:"));
                 break;
 
-            case "about":
-                botMessage.setText(BotResponse.Navigation.ABOUT);
-                botMessage.setKeyboard(BotKeyboard.mainMenu());
-                break;
-
-            case "full_rank":
-                botMessage.setText(BotResponse.Navigation.FULL_RANK_CHOICE);
+            case "FULL":
+                botMessage.setText(BotResponse.Mode.FULL_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL:RANK:"));
+                break;
 
             default:
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
@@ -64,7 +60,7 @@ public class NavigationCallbackHandler implements CallbackHandler {
                 break;
         }
 
-        BotUser botUser = botUserRepository.findById(chatId).get();
+        BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
         int lastMessageId = botUser.getLastMessageId();
 
         botMessage.edit(lastMessageId);

@@ -1,6 +1,8 @@
 package com.masssimeliano.intuitioncardbot.telegram.core;
 import com.masssimeliano.intuitioncardbot.telegram.handler.callback.AnswerCallbackHandler;
+import com.masssimeliano.intuitioncardbot.telegram.handler.callback.ModeCallbackHandler;
 import com.masssimeliano.intuitioncardbot.telegram.handler.callback.NavigationCallbackHandler;
+import com.masssimeliano.intuitioncardbot.telegram.handler.callback.PickCallbackHandler;
 import com.masssimeliano.intuitioncardbot.telegram.handler.command.StartCommandHandler;
 import com.masssimeliano.intuitioncardbot.telegram.handler.command.UnknownCommandHandler;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
     private final UnknownCommandHandler unknownCommandHandler;
     private final AnswerCallbackHandler answerCallHandler;
     private final NavigationCallbackHandler navigationCallHandler;
+    private final ModeCallbackHandler modeCallHandler;
+    private final PickCallbackHandler pickCallHandler;
 
     @Override
     public String getBotToken() {
@@ -72,7 +76,12 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
                 case "nav":
                     navigationCallHandler.handle(callbackQuery);
                     break;
-
+                case "mode":
+                    modeCallHandler.handle(callbackQuery);
+                    break;
+                case "pick":
+                    pickCallHandler.handle(callbackQuery);
+                    break;
                 default:
                     break;
             }
