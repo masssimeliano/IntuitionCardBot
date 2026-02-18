@@ -4,6 +4,8 @@ import com.masssimeliano.intuitioncardbot.telegram.model.BotUser;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+
 @Entity
 @Builder
 @RequiredArgsConstructor
@@ -26,6 +28,9 @@ public class GameHistory {
 
     @Column(name = "result", nullable = false)
     private Boolean result;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", insertable = false, updatable = false)

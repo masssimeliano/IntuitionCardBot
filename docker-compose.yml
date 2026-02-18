@@ -11,11 +11,6 @@ services:
       - "5432:5432"
     volumes:
       - intuition_pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d intuitioncardbot"]
-      interval: 5s
-      timeout: 3s
-      retries: 20
 
 volumes:
   intuition_pgdata:

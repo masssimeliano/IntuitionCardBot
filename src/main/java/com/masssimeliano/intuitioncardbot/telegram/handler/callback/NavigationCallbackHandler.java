@@ -1,5 +1,6 @@
 package com.masssimeliano.intuitioncardbot.telegram.handler.callback;
 
+import com.masssimeliano.intuitioncardbot.game.model.GameType;
 import com.masssimeliano.intuitioncardbot.telegram.core.BotKeyboard;
 import com.masssimeliano.intuitioncardbot.telegram.core.BotMessage;
 import com.masssimeliano.intuitioncardbot.telegram.core.BotResponse;
@@ -38,26 +39,46 @@ public class NavigationCallbackHandler implements CallbackHandler {
                 botMessage.setText(BotResponse.Navigation.ACTION_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
                 break;
-
             case "modes":
                 botMessage.setText(BotResponse.Navigation.MODE_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.mainMenu());
+                botMessage.setKeyboard(BotKeyboard.modesMenu());
                 break;
-
             case "stats":
                 botMessage.setText(BotResponse.Navigation.STATISTICS_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.statsMenu());
                 break;
+            case "again":
+                BotUser botUser = botUserRepository.findById(chatId).get();
+                GameType gameType = botUser.getLastGameType();
 
+                switch (gameType) {
+                    case GameType.COLOR:
+                        botMessage.setText(BotResponse.Mode.COLOR_CHOICE);
+                        botMessage.setKeyboard(BotKeyboard.colorPick());
+                        break;
+                    case GameType.SUIT:
+                        botMessage.setText(BotResponse.Mode.SUIT_CHOICE);
+                        botMessage.setKeyboard(BotKeyboard.suitPick("pick:SUIT:"));
+                        break;
+                    case GameType.RANK:
+                        botMessage.setText(BotResponse.Mode.RANK_CHOICE);
+                        botMessage.setKeyboard(BotKeyboard.rankPick("pick:RANK:"));
+                        break;
+                    case GameType.ALL:
+                        botMessage.setText(BotResponse.Mode.FULL_CHOICE);
+                        botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL_RANK:"));
+                        break;
+                    default:
+                        botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
+                        botMessage.setKeyboard(BotKeyboard.mainMenu());
+                        break;
+                }
+
+                break;
             case "about":
                 botMessage.setText(BotResponse.Navigation.ABOUT);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
                 break;
-
-            case "full_rank":
-                botMessage.setText(BotResponse.Navigation.FULL_RANK_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL:RANK:"));
-
             default:
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());

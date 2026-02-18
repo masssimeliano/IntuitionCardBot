@@ -1,9 +1,7 @@
 package com.masssimeliano.intuitioncardbot.telegram.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.masssimeliano.intuitioncardbot.game.model.GameType;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -24,6 +22,13 @@ public class BotUser {
 
     @Column(name = "username", length = 100)
     private String username;
+
+    @Column(name = "last_rank", length = 2)
+    private String lastRank;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_game_type", length = 50)
+    private GameType lastGameType;
 
     @Column(name = "last_message_id")
     private Integer lastMessageId;

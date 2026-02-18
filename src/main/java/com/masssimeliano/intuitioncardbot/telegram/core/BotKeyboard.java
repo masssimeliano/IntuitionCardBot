@@ -49,18 +49,20 @@ public final class BotKeyboard {
                 row(button("🏠 В меню", "nav:modes")));
     }
 
-    public static InlineKeyboardMarkup suitPick() {
+    public static InlineKeyboardMarkup suitPick(String prefix) {
+        // prefix: "pick:SUIT:" or "pick:FULL_SUIT:"
         return keyboard(
                 row(
-                        button("♠️ Піки", "pick:SUIT:SPADES"),
-                        button("♥️ Черви", "pick:SUIT:HEARTS")),
-                row(button("♦️ Бубни", "pick:SUIT:DIAMONDS"),
-                        button("♣️ Трефи", "pick:SUIT:CLUBS")),
+                        button("♠️ Піки", prefix + "SPADES"),
+                        button("♥️ Черви", prefix + "HEARTS")),
+                row(
+                        button("♦️ Бубни", prefix + "DIAMONDS"),
+                        button("♣️ Трефи", prefix + "CLUBS")),
                 row(button("🏠 В меню", "nav:modes")));
     }
 
     public static InlineKeyboardMarkup rankPick(String prefix) {
-        // prefix: "pick:RANK:" or "pick:FULL:RANK:"
+        // prefix: "pick:RANK:" or "pick:FULL_RANK:"
         return keyboard(
                 row(
                         button("A", prefix + "A"),
@@ -82,20 +84,9 @@ public final class BotKeyboard {
                 row(button("🏠 В меню", "nav:modes")));
     }
 
-    public static InlineKeyboardMarkup fullPick() {
-        return keyboard(
-                row(
-                        button("♠️", "pick:FULL:SUIT:SPADES"),
-                        button("♥️", "pick:FULL:SUIT:HEARTS"),
-                        button("♦️", "pick:FULL:SUIT:DIAMONDS"),
-                        button("♣️", "pick:FULL:SUIT:CLUBS")),
-                row(button("⬅️ Назад до номіналу", "nav:full_rank")),
-                row(button("🏠 В меню", "nav:modes")));
-    }
-
     public static InlineKeyboardMarkup afterRound() {
         return keyboard(
-                row(button("🔁 Ще раз", "again")),
+                row(button("🔁 Ще раз", "nav:again")),
                 row(button("🎴 Змінити режим", "nav:modes")),
                 row(button("📊 Моя статистика", "nav:stats")));
     }

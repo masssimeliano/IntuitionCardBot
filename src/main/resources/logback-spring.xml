@@ -25,11 +25,8 @@
     </appender>
 
     <!-- ===== Log levels ===== -->
-
     <logger name="com.masssimeliano" level="DEBUG"/>
-
     <logger name="org.telegram" level="INFO"/>
-
     <logger name="org.springframework" level="INFO"/>
 
     <root level="INFO">

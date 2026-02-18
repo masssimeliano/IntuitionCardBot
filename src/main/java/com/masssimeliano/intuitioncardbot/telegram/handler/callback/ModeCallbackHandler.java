@@ -38,22 +38,18 @@ public class ModeCallbackHandler implements CallbackHandler {
                 botMessage.setText(BotResponse.Mode.COLOR_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.colorPick());
                 break;
-
             case "SUIT":
                 botMessage.setText(BotResponse.Mode.SUIT_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.suitPick());
+                botMessage.setKeyboard(BotKeyboard.suitPick("pick:SUIT:"));
                 break;
-
             case "RANK":
                 botMessage.setText(BotResponse.Mode.RANK_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.rankPick("pick:RANK:"));
                 break;
-
             case "FULL":
                 botMessage.setText(BotResponse.Mode.FULL_CHOICE);
-                botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL:RANK:"));
+                botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL_RANK:"));
                 break;
-
             default:
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
