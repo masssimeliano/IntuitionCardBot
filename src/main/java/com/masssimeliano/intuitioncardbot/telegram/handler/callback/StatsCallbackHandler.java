@@ -83,11 +83,14 @@ public class StatsCallbackHandler implements CallbackHandler {
             default -> {
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
+                log.warn("Unknown callback data stats part: {}", root);
             }
         }
 
         BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
-        botMessage.edit(botUser.getLastMessageId());
+        int lastMessageId = botUser.getLastMessageId();
+
+        botMessage.edit(lastMessageId);
     }
 
     private Instant startOfToday() {

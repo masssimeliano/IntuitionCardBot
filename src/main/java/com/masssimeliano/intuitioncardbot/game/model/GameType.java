@@ -4,5 +4,5 @@ public enum GameType {
     COLOR,
     SUIT,
     RANK,
-    ALL
+    FULL
 }

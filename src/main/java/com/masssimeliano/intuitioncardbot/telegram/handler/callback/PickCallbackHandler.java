@@ -42,150 +42,136 @@ public class PickCallbackHandler implements CallbackHandler {
                 .telegramClient(telegramClient)
                 .build();
 
-        double p = Math.random();
-        String actualSuit, actualRank, actualColor;
-        boolean correctChoice;
-        GameHistory gameHistory;
-        BotUser botUser;
-
         switch (root) {
-            case "COLOR":
-                actualColor = "BLACK";
-                if (Math.random() < 0.5) {
-                    actualColor = "RED";
-                }
+            case "COLOR" -> {
+                String actualColor = generateRandomColor();
 
                 botMessage.setText(BotResponse.Pick.RESULT_COLOR(ColorMapper.mapToEmoji(gamePart), ColorMapper.mapToEmoji(actualColor)));
                 botMessage.setKeyboard(BotKeyboard.afterRound());
 
-                correctChoice = actualColor.equals(gamePart);
-
-                gameHistory = GameHistory.builder()
+                boolean isChoiceCorrect = actualColor.equals(gamePart);
+                GameHistory gameHistory = GameHistory.builder()
                         .chatId(chatId)
-                        .result(correctChoice)
+                        .result(isChoiceCorrect)
                         .gameType(GameType.COLOR)
                         .createdAt(Instant.now())
                         .build();
                 gameHistoryRepository.save(gameHistory);
 
-                botUser = botUserRepository.findById(chatId).orElseThrow();
+                BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
                 botUser.setLastGameType(GameType.COLOR);
                 botUserRepository.save(botUser);
-                break;
-            case "SUIT":
-                actualSuit =
-                        (p < 0.25)  ? "HEARTS" :
-                                (p < 0.5)  ? "DIAMONDS" :
-                                        (p < 0.75)  ? "CLUBS" : "SPADES";
+            }
+            case "SUIT" -> {
+                String actualSuit = generateRandomSuit();
 
                 botMessage.setText(BotResponse.Pick.RESULT_SUIT(SuitMapper.mapToEmoji(gamePart), SuitMapper.mapToEmoji(actualSuit)));
                 botMessage.setKeyboard(BotKeyboard.afterRound());
 
-                correctChoice = actualSuit.equals(gamePart);
-
-                gameHistory = GameHistory.builder()
+                boolean isChoiceCorrect = actualSuit.equals(gamePart);
+                GameHistory gameHistory = GameHistory.builder()
                         .chatId(chatId)
-                        .result(correctChoice)
+                        .result(isChoiceCorrect)
                         .gameType(GameType.SUIT)
                         .createdAt(Instant.now())
                         .build();
                 gameHistoryRepository.save(gameHistory);
 
-                botUser = botUserRepository.findById(chatId).orElseThrow();
+                BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
                 botUser.setLastGameType(GameType.SUIT);
                 botUserRepository.save(botUser);
-                break;
-            case "RANK":
-                p = Math.random();
-                actualRank =
-                        (p < 1.0/13)  ? "A" :
-                                (p < 2.0/13)  ? "K" :
-                                        (p < 3.0/13)  ? "Q" :
-                                                (p < 4.0/13)  ? "J" :
-                                                        (p < 5.0/13)  ? "10" :
-                                                                (p < 6.0/13)  ? "9" :
-                                                                        (p < 7.0/13)  ? "8" :
-                                                                                (p < 8.0/13)  ? "7" :
-                                                                                        (p < 9.0/13)  ? "6" :
-                                                                                                (p < 10.0/13) ? "5" :
-                                                                                                        (p < 11.0/13) ? "4" :
-                                                                                                                (p < 12.0/13) ? "3" : "2";
+            }
+            case "RANK" -> {
+                String actualRank = generateRandomRank();
 
                 botMessage.setText(BotResponse.Pick.RESULT_RANK(gamePart, actualRank));
                 botMessage.setKeyboard(BotKeyboard.afterRound());
 
-                correctChoice = actualRank.equals(gamePart);
-
-                gameHistory = GameHistory.builder()
+                boolean isChoiceCorrect = actualRank.equals(gamePart);
+                GameHistory gameHistory = GameHistory.builder()
                         .chatId(chatId)
-                        .result(correctChoice)
+                        .result(isChoiceCorrect)
                         .gameType(GameType.RANK)
                         .createdAt(Instant.now())
                         .build();
                 gameHistoryRepository.save(gameHistory);
 
-                botUser = botUserRepository.findById(chatId).orElseThrow();
+                BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
                 botUser.setLastGameType(GameType.RANK);
                 botUserRepository.save(botUser);
-                break;
-            case "FULL_RANK":
-                botUser = botUserRepository.findById(chatId).orElseThrow();
+            }
+            case "FULL_RANK" -> {
+                BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
                 botUser.setLastRank(gamePart);
                 botUserRepository.save(botUser);
 
                 botMessage.setText(BotResponse.Pick.FULL_AFTER_RANK);
                 botMessage.setKeyboard(BotKeyboard.suitPick("pick:FULL_SUIT:"));
-                break;
-            case "FULL_SUIT":
-                p = Math.random();
-                actualRank =
-                        (p < 1.0/13)  ? "A" :
-                                (p < 2.0/13)  ? "K" :
-                                        (p < 3.0/13)  ? "Q" :
-                                                (p < 4.0/13)  ? "J" :
-                                                        (p < 5.0/13)  ? "10" :
-                                                                (p < 6.0/13)  ? "9" :
-                                                                        (p < 7.0/13)  ? "8" :
-                                                                                (p < 8.0/13)  ? "7" :
-                                                                                        (p < 9.0/13)  ? "6" :
-                                                                                                (p < 10.0/13) ? "5" :
-                                                                                                        (p < 11.0/13) ? "4" :
-                                                                                                                (p < 12.0/13) ? "3" : "2";
-                actualSuit =
-                        (p < 0.25)  ? "HEARTS" :
-                                (p < 0.5)  ? "DIAMONDS" :
-                                        (p < 0.75)  ? "CLUBS" : "SPADES";
+            }
+            case "FULL_SUIT"  -> {
+                String actualRank = generateRandomRank();
+                String actualSuit = generateRandomSuit();
 
-                botUser = botUserRepository.findById(chatId).orElseThrow();
+                BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
                 String lastRank = botUser.getLastRank();
 
                 botMessage.setText(BotResponse.Pick.RESULT_FULL(
-                        lastRank+ " " + SuitMapper.mapToEmoji(gamePart),
+                        lastRank + " " + SuitMapper.mapToEmoji(gamePart),
                         actualRank + " " + SuitMapper.mapToEmoji(actualSuit)));
                 botMessage.setKeyboard(BotKeyboard.afterRound());
 
-                correctChoice = actualRank.equals(lastRank) && actualSuit.equals(gamePart);
-
-                gameHistory = GameHistory.builder()
+                boolean isChoiceCorrect = actualRank.equals(lastRank) && actualSuit.equals(gamePart);
+                GameHistory gameHistory = GameHistory.builder()
                         .chatId(chatId)
-                        .result(correctChoice)
-                        .gameType(GameType.ALL)
+                        .result(isChoiceCorrect)
+                        .gameType(GameType.FULL)
                         .createdAt(Instant.now())
                         .build();
                 gameHistoryRepository.save(gameHistory);
 
-                botUser.setLastGameType(GameType.ALL);
+                botUser.setLastGameType(GameType.FULL);
                 botUserRepository.save(botUser);
-                break;
-            default:
+            }
+            default -> {
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
-                break;
+                log.warn("Unknown callback data pick part: {}", root);
+            }
         }
 
-        botUser = botUserRepository.findById(chatId).orElseThrow();
+        BotUser botUser = botUserRepository.findById(chatId).orElseThrow();
         int lastMessageId = botUser.getLastMessageId();
 
         botMessage.edit(lastMessageId);
+    }
+
+    private String generateRandomRank() {
+        double p = Math.random();
+        return
+                (p < 1.0/13)  ? "A" :
+                        (p < 2.0/13)  ? "K" :
+                                (p < 3.0/13)  ? "Q" :
+                                        (p < 4.0/13)  ? "J" :
+                                                (p < 5.0/13)  ? "10" :
+                                                        (p < 6.0/13)  ? "9" :
+                                                                (p < 7.0/13)  ? "8" :
+                                                                        (p < 8.0/13)  ? "7" :
+                                                                                (p < 9.0/13)  ? "6" :
+                                                                                        (p < 10.0/13) ? "5" :
+                                                                                                (p < 11.0/13) ? "4" :
+                                                                                                        (p < 12.0/13) ? "3" : "2";
+    }
+
+    private String generateRandomSuit() {
+        double p = Math.random();
+        return
+                (p < 0.25)  ? "HEARTS" :
+                        (p < 0.5)  ? "DIAMONDS" :
+                                (p < 0.75)  ? "CLUBS" : "SPADES";
+    }
+
+    private String generateRandomColor() {
+        double p = Math.random();
+        return (p < 0.5) ? "RED" : "BLACK";
     }
 }

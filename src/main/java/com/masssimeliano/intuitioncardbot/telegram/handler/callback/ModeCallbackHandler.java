@@ -34,26 +34,27 @@ public class ModeCallbackHandler implements CallbackHandler {
                 .build();
 
         switch (root) {
-            case "COLOR":
+            case "COLOR" -> {
                 botMessage.setText(BotResponse.Mode.COLOR_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.colorPick());
-                break;
-            case "SUIT":
+            }
+            case "SUIT" -> {
                 botMessage.setText(BotResponse.Mode.SUIT_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.suitPick("pick:SUIT:"));
-                break;
-            case "RANK":
+            }
+            case "RANK" -> {
                 botMessage.setText(BotResponse.Mode.RANK_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.rankPick("pick:RANK:"));
-                break;
-            case "FULL":
+            }
+            case "FULL" -> {
                 botMessage.setText(BotResponse.Mode.FULL_CHOICE);
                 botMessage.setKeyboard(BotKeyboard.rankPick("pick:FULL_RANK:"));
-                break;
-            default:
+            }
+            default -> {
                 botMessage.setText(BotResponse.Navigation.UNKNOWN_ERROR);
                 botMessage.setKeyboard(BotKeyboard.mainMenu());
-                break;
+                log.warn("Unknown callback data mode part: {}", root);
+            }
         }
 
         BotUser botUser = botUserRepository.findById(chatId).orElseThrow();

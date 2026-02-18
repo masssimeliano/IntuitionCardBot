@@ -46,12 +46,10 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
             if (updateMessage.hasText()) {
                 String updateText = updateMessage.getText();
 
-                switch (updateText) {
-                    case "/start":
-                        startCommandHandler.handle(updateMessage);
-                        break;
-                    default:
-                        unknownCommandHandler.handle(updateMessage);
+                if ("/start".equals(updateText)) {
+                    startCommandHandler.handle(updateMessage);
+                } else {
+                    unknownCommandHandler.handle(updateMessage);
                 }
             } else {
                 unknownCommandHandler.handle(updateMessage);
@@ -64,6 +62,7 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
             String callbackText = callbackQuery.getData();
 
             if (callbackText == null || callbackText.isBlank()) {
+                log.warn("Callback is empty");
                 return;
             }
 
@@ -71,20 +70,22 @@ public class Bot implements SpringLongPollingBot, LongPollingSingleThreadUpdateC
             String root = callbackTextParts[0];
 
             switch (root) {
-                case "nav":
+                case "nav" -> {
                     navigationCallHandler.handle(callbackQuery);
-                    break;
-                case "mode":
+                }
+                case "mode" -> {
                     modeCallHandler.handle(callbackQuery);
-                    break;
-                case "pick":
+                }
+                case "pick" -> {
                     pickCallHandler.handle(callbackQuery);
-                    break;
-                case "stats":
+                }
+                case "stats" -> {
                     statsCallbackHandler.handle(callbackQuery);
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                    unknownCommandHandler.handle(update.getMessage());
+                    log.warn("Unknown callback data part: {}", root);
+                }
             }
         }
     }
